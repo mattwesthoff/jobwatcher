@@ -1,0 +1,22 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    <script src="http://js.pusher.com/1.12/pusher.min.js"></script>
+    <script src="~/Scripts/views/index.js"> </script>
+}
+
+<h2>Jobs!</h2>
+
+<div>
+    <a id="newJob" href="javascript:void(0);">start a job!</a>
+</div>
+
+<h3>Job Log</h3>
+<div>
+    <ul id="jobList"></ul>
+</div>
