@@ -30,16 +30,8 @@ namespace jobwatcher.Utilities
 
         public void JobFinished(int id)
         {
-            _pusher.Trigger(
-                new ObjectPusherRequest(
-                    "job_channel",
-                    "job_finished",
-                    new
-                        {
-                            id,
-                            timestamp = _timestamps.GetTimestamp()
-                        })
-                );
+            _pusher.Trigger(new ObjectPusherRequest("job_channel", "job_finished",
+                                                    new Job {Id = id, Timestamp = _timestamps.GetTimestamp()}));
         }
     }
 }

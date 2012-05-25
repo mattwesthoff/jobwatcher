@@ -21,28 +21,33 @@ namespace jobwatcher.Controllers
         }
 
         private static int _jobCount = 0;
-        
-        [GET("create")]
-        [POST("create")]
-        public Job CreateJob(string text = "hi")
+
+        [POST("create/{text}")]
+        public Job CreateJob(string text)
         {
             var id = _jobCount;
 
             var job = _messagePusher.JobCreated(text, id);
 
-            var runJobTask = new Task(() =>
-            {
-                var onebyte = new byte[] { 0x0 };
-                new RNGCryptoServiceProvider("someseed").GetBytes(onebyte);
-                Thread.Sleep(onebyte[0] * 25);
-                _messagePusher.JobFinished(id);
-            });
+            var runJobTask = new Task(
+                () =>
+                    {
+                        SleepForABit();
+                        _messagePusher.JobFinished(id);
+                    });
 
             _jobCount++;
 
             runJobTask.Start();
 
             return job;
+        }
+
+        private static void SleepForABit()
+        {
+            var onebyte = new byte[] {0x0};
+            new RNGCryptoServiceProvider("someseed").GetBytes(onebyte);
+            Thread.Sleep(onebyte[0]*25);
         }
     }
 }
